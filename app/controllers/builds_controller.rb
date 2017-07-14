@@ -20,7 +20,7 @@ class BuildsController < ApplicationController
   end
 
   post '/builds' do
-    if params[:title] == "" || params[:budget] == ""
+    if params.values.include?("")
       flash[:message] = "Please fill out all fields."
     else
       user = User.find(session[:user_id])
@@ -51,6 +51,20 @@ class BuildsController < ApplicationController
     else
       flash[:message] = "Please login to access builds."
       erb :'users/login'
+    end
+  end
+
+  patch '/builds/:id' do
+    if params.values.include?("")
+      @build = Build.find(params[:id])
+      flash[:message] = "Please fill out all fields."
+      redirect to "/builds/#{params[:id]}/edit"
+    else
+      @build = Build.find(params[:id])
+      @build.title = params[:title]
+      @build.budget = params[:budget]
+      @build.save
+      redirect to "/builds/#{@build.id}"
     end
   end
 
