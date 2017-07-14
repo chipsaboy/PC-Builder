@@ -19,4 +19,14 @@ class BuildsController < ApplicationController
     end
   end
 
+  post '/builds' do
+    if params[:title] == "" || params[:budget] == ""
+      flash[:message] = "Please fill out all fields."
+    else
+      user = User.find(session[:user_id])
+      @build = Build.create(title: params[:title], budget: params[:budget], user_id: params[:user_id])
+      redirect to "/builds/#{@build.id}"
+    end
+  end
+
 end
