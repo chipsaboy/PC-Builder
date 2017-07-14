@@ -58,6 +58,7 @@ class BuildsController < ApplicationController
     if params.values.include?("")
       @build = Build.find(params[:id])
       flash[:message] = "Please fill out all fields."
+      erb :'builds/edit'
       redirect to "/builds/#{params[:id]}/edit"
     else
       @build = Build.find(params[:id])

@@ -34,7 +34,7 @@ class UsersController < ApplicationController
       redirect to '/builds'
     else
       flash[:message] = "Incorrect Username or Password, please try again."
-      redirect to '/login'
+      erb :'users/login'
     end
   end
 
@@ -46,5 +46,6 @@ class UsersController < ApplicationController
       redirect to '/builds'
     end
   end
+
 
 end
