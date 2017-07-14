@@ -8,5 +8,16 @@ class UsersController < ApplicationController
     end
   end
 
+  post '/signup' do
+    if params[:email] == "" || params[:username] == "" || params[:password] == ""
+      erb :'users/signup'
+    else
+      @user = User.new(email: params[:email], username: params[:username], password: params[:password])
+      @user.save
+      session[:user_id] = @user.id
+      redirect to '/builds'
+    end
+  end
+
 
 end
