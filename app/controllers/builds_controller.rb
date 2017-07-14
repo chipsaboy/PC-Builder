@@ -68,4 +68,19 @@ class BuildsController < ApplicationController
     end
   end
 
+  delete '/builds/:id/delete' do
+    @build = Build.find(params[:id])
+    if session[:user_id]
+      @build = Build.find(params[:id])
+      if @build.user_id == session[:user_id]
+        @build.delete
+        redirect to '/builds'
+      else
+        redirect to '/builds'
+      end
+    else
+      redirect to '/login'
+    end
+  end
+
 end
