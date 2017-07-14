@@ -1,3 +1,8 @@
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
+
+
 <h2>Add a new part</h2>
 <form action="/builds/<%= @build.id %>" method="POST">
 	<label>Name:</label><br>
