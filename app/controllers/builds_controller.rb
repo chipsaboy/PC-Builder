@@ -39,4 +39,19 @@ class BuildsController < ApplicationController
     end
   end
 
+  get '/builds/:id/edit' do
+    if logged_in?
+      @build = Build.find(params[:id])
+      if @build.user_id == session[:user_id]
+        erb :'builds/edit'
+      else
+        flash[:message] = "You cannot edit this build."
+        redirect to '/builds'
+      end
+    else
+      flash[:message] = "Please login to access builds."
+      erb :'users/login'
+    end
+  end
+
 end
