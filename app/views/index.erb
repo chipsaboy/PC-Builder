@@ -1,0 +1,8 @@
+<h1>Welcome to PC-Builder!</h1><br>
+
+<% if logged_in? %>
+		<a href="/logout">Logout</a>
+<% else %>
+		<a href="/login" title="">Login</a><br>
+		<a href="/signup" title="">Sign Up</a>
+<% end %>
