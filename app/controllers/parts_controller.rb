@@ -1,6 +1,6 @@
 class PartsController < ApplicationController
 
-  get '/builds/:id/part/new' do
+  get '/builds/:id/parts/new' do
     if logged_in?
       @build = Build.find(params[:id])
       erb :'parts/new'
@@ -29,7 +29,7 @@ class PartsController < ApplicationController
     @part = Part.find(params[:part_id])
     if logged_in?
       @build = Build.find(params[:id])
-      if @build.user_id == session[:user_id]
+      if current_user
         @part = Part.find(params[:part_id])
         @part.delete
         redirect to "/builds/#{@build.id}"

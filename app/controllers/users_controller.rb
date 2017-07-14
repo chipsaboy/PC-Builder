@@ -40,7 +40,7 @@ class UsersController < ApplicationController
 
   get '/logout' do
     if session[:user_id] != nil
-      session.clear
+      session.destroy
       redirect to '/'
     else
       redirect to '/builds'

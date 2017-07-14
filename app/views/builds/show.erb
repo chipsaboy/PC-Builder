@@ -1,18 +1,21 @@
-<<h1><%= @build.title %></h1>
-<h2>Budget: <%= @build.budget %></h2>
+<h1><%= @build.title %></h1>
+<h2>Budget: <%= @build.budget %></h2><br>
 
 <ul>
-    <% @build.parts.each do |part|
+    <% @build.parts.each do |part| %>
 		<li><%= "#{part.name} - $#{part.price}" %>
 			<form action="/builds/<%= @build.id %>/parts/<%= part.id %>/delete" method="POST">
-        		<input id="hidden" type="hidden" name="_method" value="delete">
+	        	<input id="hidden" type="hidden" name="_method" value="delete">
 				<input type="submit" value="Delete">
-        	</form>
+	        </form>
 		</li>
+
     <% end %>
 </ul>
+<h4>Want to add a new part? Click <a href="/builds/<%= @build.id %>/parts/new">here</a>.</h4>
+<h4>Want to edit your build? Click <a href="/builds/<%= @build.id %>/edit">here</a>.</h4>
 
-<form action="/builds/<%= build.id %>/delete" method="POST">
+<form action="/builds/<%= @build.id %>/delete" method="POST">
 	<input id="hidden" type="hidden" name="_method" value="delete">
-	<input type="submit" name="Delete Build">
+	<input type="submit" value="Delete Build">
 </form>

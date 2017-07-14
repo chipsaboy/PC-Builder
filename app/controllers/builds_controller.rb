@@ -29,7 +29,7 @@ class BuildsController < ApplicationController
     end
   end
 
-  get '/builds/:id/' do
+  get '/builds/:id' do
     if logged_in?
       @build = Build.find(params[:id])
       erb :'builds/show'
@@ -42,10 +42,9 @@ class BuildsController < ApplicationController
   get '/builds/:id/edit' do
     if logged_in?
       @build = Build.find(params[:id])
-      if @build.user_id == session[:user_id]
+      if current_user
         erb :'builds/edit'
       else
-        flash[:message] = "You cannot edit this build."
         redirect to '/builds'
       end
     else
@@ -73,7 +72,7 @@ class BuildsController < ApplicationController
     @build = Build.find(params[:id])
     if session[:user_id]
       @build = Build.find(params[:id])
-      if @build.user_id == session[:user_id]
+      if current_user
         @build.delete
         redirect to '/builds'
       else
