@@ -10,4 +10,13 @@ class BuildsController < ApplicationController
     end
   end
 
+  get '/builds/new' do
+    if logged_in?
+      erb :'builds/new'
+    else
+      flash[:message] = "Please login to access builds."
+      erb :'users/login'
+    end
+  end
+
 end
