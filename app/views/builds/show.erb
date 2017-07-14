@@ -1,9 +1,14 @@
-<h1><%= @build.title %></h1>
+<<h1><%= @build.title %></h1>
 <h2>Budget: <%= @build.budget %></h2>
 
 <ul>
     <% @build.parts.each do |part|
-		<li><%= "#{part.name} - $#{part.price}" %></li>
+		<li><%= "#{part.name} - $#{part.price}" %>
+			<form action="/builds/<%= @build.id %>/parts/<%= part.id %>/delete" method="POST">
+        		<input id="hidden" type="hidden" name="_method" value="delete">
+				<input type="submit" value="Delete">
+        	</form>
+		</li>
     <% end %>
 </ul>
 

@@ -24,4 +24,22 @@ class PartsController < ApplicationController
     end
   end
 
+  delete '/builds/:id/parts/:part_id/delete' do
+    @build = Build.find(params[:id])
+    @part = Part.find(params[:part_id])
+    if logged_in?
+      @build = Build.find(params[:id])
+      if @build.user_id == session[:user_id]
+        @part = Part.find(params[:part_id])
+        @part.delete
+        redirect to "/builds/#{@build.id}"
+      else
+        redirect to "/builds/#{@build.id}"
+      end
+    else
+      flash[:message] = "Please login."
+      erb :'users/login'
+    end
+  end
+
 end
