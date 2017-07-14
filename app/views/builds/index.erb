@@ -1,0 +1,4 @@
+<h1>Builds</h1>
+<% @builds.each do |build| %>
+	<h3><a href="/builds/<%= build.id %>"><%= build.title %></a></h3>
+<% end %>
