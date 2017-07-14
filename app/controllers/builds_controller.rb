@@ -29,4 +29,14 @@ class BuildsController < ApplicationController
     end
   end
 
+  get '/builds/:id/' do
+    if logged_in?
+      @build = Build.find(params[:id])
+      erb :'builds/show'
+    else
+      flash[:message] = "Please login to access builds."
+      erb :'users/login'
+    end
+  end
+
 end

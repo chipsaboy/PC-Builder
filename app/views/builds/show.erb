@@ -1,0 +1,8 @@
+<h1><%= @build.title %></h1>
+<h2>Budget: <%= @build.budget %></h2>
+
+<ul>
+    <% @build.parts.each do |part|
+		<li><%= "#{part.name} - $#{part.price}" %></li>
+    <% end %>
+</ul>
