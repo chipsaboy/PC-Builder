@@ -25,11 +25,9 @@ class PartsController < ApplicationController
   end
 
   delete '/builds/:id/parts/:part_id/delete' do
-    @build = Build.find(params[:id])
-    @part = Part.find(params[:part_id])
     if logged_in?
-      @build = Build.find(params[:id])
-      if @build.user_id == session[:user_id]
+      @build = Build.find_by_id(params[:id])
+      if @build.user_id == current_user.id
         @part = Part.find(params[:part_id])
         @part.delete
         redirect to "/builds/#{@build.id}"

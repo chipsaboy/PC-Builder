@@ -2,7 +2,7 @@ class BuildsController < ApplicationController
 
   get '/builds' do
     if logged_in?
-      @builds = Build.all
+      @builds = current_user.builds
       erb :'builds/index'
     else
       flash[:message] = "Please login to access builds."
@@ -24,8 +24,7 @@ class BuildsController < ApplicationController
       flash[:message] = "Please fill out all fields."
       erb :'builds/new'
     else
-      user = User.find(session[:user_id])
-      @build = Build.create(title: params[:title], budget: params[:budget], user_id: params[:user_id])
+      @build = Build.create(title: params[:title], budget: params[:budget], user_id: current_user.id)
       redirect to "/builds/#{@build.id}"
     end
   end
@@ -43,7 +42,7 @@ class BuildsController < ApplicationController
   get '/builds/:id/edit' do
     if logged_in?
       @build = Build.find(params[:id])
-      if current_user
+      if @build.user_id == current_user.id
         erb :'builds/edit'
       else
         redirect to '/builds'
@@ -70,10 +69,9 @@ class BuildsController < ApplicationController
   end
 
   delete '/builds/:id/delete' do
-    @build = Build.find(params[:id])
-    if session[:user_id]
-      @build = Build.find(params[:id])
-      if @build.user_id == session[:user_id]
+    if logged_in?
+      @build = Build.find_by_id(params[:id])
+      if @build.user_id == current_user.id
         @build.delete
         redirect to '/builds'
       else
