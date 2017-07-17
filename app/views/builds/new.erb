@@ -1,3 +1,7 @@
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
+
 <h1>Create a new Build</h1>
 <form action="/builds" method="POST">
 	<label>Title:</label>

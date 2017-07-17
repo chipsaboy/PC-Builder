@@ -1,5 +1,5 @@
 <h1><%= @build.title %></h1>
-<h2>Budget: <%= @build.budget %></h2><br>
+<h2>Budget: $<%= @build.budget %></h2><br>
 
 <ul>
     <% @build.parts.each do |part| %>
@@ -14,6 +14,7 @@
 </ul>
 <h4>Want to add a new part? Click <a href="/builds/<%= @build.id %>/parts/new">here</a>.</h4>
 <h4>Want to edit your build? Click <a href="/builds/<%= @build.id %>/edit">here</a>.</h4>
+<h4>Want to see all builds? Click <a href="/builds">here</a>.</h4>
 
 <form action="/builds/<%= @build.id %>/delete" method="POST">
 	<input id="hidden" type="hidden" name="_method" value="delete">

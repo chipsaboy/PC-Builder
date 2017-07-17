@@ -22,6 +22,7 @@ class BuildsController < ApplicationController
   post '/builds' do
     if params.values.include?("")
       flash[:message] = "Please fill out all fields."
+      erb :'builds/new'
     else
       user = User.find(session[:user_id])
       @build = Build.create(title: params[:title], budget: params[:budget], user_id: params[:user_id])
