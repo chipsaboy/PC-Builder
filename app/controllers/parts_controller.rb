@@ -29,7 +29,7 @@ class PartsController < ApplicationController
     @part = Part.find(params[:part_id])
     if logged_in?
       @build = Build.find(params[:id])
-      if current_user
+      if @build.user_id == session[:user_id]
         @part = Part.find(params[:part_id])
         @part.delete
         redirect to "/builds/#{@build.id}"

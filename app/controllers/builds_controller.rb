@@ -73,7 +73,7 @@ class BuildsController < ApplicationController
     @build = Build.find(params[:id])
     if session[:user_id]
       @build = Build.find(params[:id])
-      if current_user
+      if @build.user_id == session[:user_id]
         @build.delete
         redirect to '/builds'
       else
