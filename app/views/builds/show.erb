@@ -9,8 +9,8 @@
 				<input type="submit" value="Delete">
 	        </form>
 		</li>
-
     <% end %>
+    <h3 id="total"> Total: $<%= @build.parts.reduce(0) { |sum, obj| sum + obj.price } %></h3>
 </ul>
 <h4>Want to add a new part? Click <a href="/builds/<%= @build.id %>/parts/new">here</a>.</h4>
 <h4>Want to edit your build? Click <a href="/builds/<%= @build.id %>/edit">here</a>.</h4>
