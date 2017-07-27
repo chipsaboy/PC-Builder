@@ -6,21 +6,22 @@ class PartsController < ApplicationController
       erb :'parts/new'
     else
       flash[:message] = "Please login."
-      erb :'users/login'
+      redirect to '/login'
     end
   end
 
   post '/builds/:id' do
-    if params.values.include?("")
+    if logged_in?
       @build = Build.find(params[:id])
-      flash[:message] = "Please fill out all fields."
-      erb :'parts/new'
+      @part = @build.parts.build(name: params[:name], price: params[:price])
+      if @part.save
+        redirect to "/builds/#{@build.id}"
+      else
+        flash[:message] = @parts.errors.full_messages.join(', ')
+        erb :'parts/new'
+      end
     else
-      @build = Build.find(params[:id])
-      @part = Part.new(name: params[:name], price: params[:price])
-      @part.save
-      @build.parts << @part
-      redirect to "/builds/#{@build.id}"
+      redirect to '/login'
     end
   end
 

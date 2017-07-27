@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   get '/signup' do
     if !logged_in?
+      @user = User.new
       erb :'users/signup'
     else
       redirect to '/builds'
@@ -9,13 +10,12 @@ class UsersController < ApplicationController
   end
 
   post '/signup' do
-    if params[:email] == "" || params[:username] == "" || params[:password] == ""
-      erb :'users/signup'
-    else
-      @user = User.new(email: params[:email], username: params[:username], password: params[:password])
-      @user.save
+    @user = User.new(params)
+    if @user.save
       session[:user_id] = @user.id
       redirect to '/builds'
+    else
+       erb :'users/signup'
     end
   end
 
