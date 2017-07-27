@@ -6,7 +6,7 @@ class BuildsController < ApplicationController
       erb :'builds/index'
     else
       flash[:message] = "Please login to access builds."
-      erb :'users/login'
+      redirect to '/login'
     end
   end
 
@@ -14,70 +14,55 @@ class BuildsController < ApplicationController
     if logged_in?
       erb :'builds/new'
     else
-      flash[:message] = "Please login to access builds."
-      erb :'users/login'
+      redirect to '/login'
     end
   end
 
   post '/builds' do
-    if params.values.include?("")
-      flash[:message] = "Please fill out all fields."
-      erb :'builds/new'
-    else
-      @build = Build.create(title: params[:title], budget: params[:budget], user_id: current_user.id)
+    @build = current_user.builds.build(params)
+    if @build.save
       redirect to "/builds/#{@build.id}"
+    else
+      flash[:message] = @build.errors.full_messages.join(', ')
+      redirect to '/builds/new'
     end
   end
 
   get '/builds/:id' do
-    if logged_in?
-      @build = Build.find(params[:id])
+    @build = Build.find(params[:id])
+    if logged_in? && @build.user_id == current_user.id
       erb :'builds/show'
     else
-      flash[:message] = "Please login to access builds."
-      erb :'users/login'
+      flash[:message] = "You do not have access to that build"
+      redirect to '/builds'
     end
   end
 
   get '/builds/:id/edit' do
-    if logged_in?
-      @build = Build.find(params[:id])
-      if @build.user_id == current_user.id
-        erb :'builds/edit'
-      else
-        redirect to '/builds'
-      end
+    @build = Build.find(params[:id])
+    if logged_in? && @build.user_id == current_user.id
+      erb :'builds/edit'
     else
-      flash[:message] = "Please login to access builds."
-      erb :'users/login'
+      redirect to '/builds'
     end
   end
 
   patch '/builds/:id' do
-    if params.values.include?("")
-      @build = Build.find(params[:id])
-      flash[:message] = "Please fill out all fields."
-      erb :'builds/edit'
-    else
-      @build = Build.find(params[:id])
-      @build.title = params[:title]
-      @build.budget = params[:budget]
-      @build.save
+    @build = Build.find_by_id(params[:id])
+    if @build.update({:title => params[:title], :budget => params[:budget]})
       redirect to "/builds/#{@build.id}"
+    else
+      flash[:message] = @build.errors.full_messages.join(', ')
+      redirect to "/builds/#{@build.id}/edit"
     end
   end
 
   delete '/builds/:id/delete' do
-    if logged_in?
-      @build = Build.find_by_id(params[:id])
-      if @build.user_id == current_user.id
-        @build.delete
-        redirect to '/builds'
-      else
-        redirect to '/builds'
-      end
+    @build = current_user.builds.find_by_id(params[:id])
+    if @build && @build.destroy
+      redirect to '/builds'
     else
-      redirect to '/login'
+      redirect to "/builds/#{@build.id}"
     end
   end
 

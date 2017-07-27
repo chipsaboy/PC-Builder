@@ -1,8 +1,14 @@
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
+
 <h1>Edit Build</h1><br>
 
 <form action="/builds/<%= @build.id %>" method="POST">
-	<input id="hidden" type="hidden" name="_method" value="PATCH">
+	<input id="hidden" type="hidden" name="_method" value="patch">
 	<input type="text" name="title" value="<%= @build.title %>"><br>
 	<input type="text" name="budget" value="<%= @build.budget %>"><br>
 	<input id="submit" type="submit" value="submit">
 </form>
+
+<p><a href="/logout">Logout</a></p>

@@ -1,6 +1,12 @@
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
+
 <h1>Builds</h1>
 <% @builds.each do |build| %>
 	<h3><a href="/builds/<%= build.id %>"><%= build.title %></a></h3>
 <% end %>
 
 <h3>Want to create a new build? Click <a href="/builds/new">here</a>.</h3>
+
+<p><a href="/logout">Logout</a></p>
