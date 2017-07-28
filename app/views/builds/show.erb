@@ -1,24 +1,32 @@
-<h1><%= @build.title %></h1>
-<h2>Budget: $<%= @build.budget %></h2><br>
+<div class="container">
+	<h1><%= @build.title %></h1>
+	<h2>Budget: $<%= @build.budget %></h2><br>
 
-<ul>
-    <% @build.parts.each do |part| %>
-		<li><%= "#{part.name} - $#{part.price}" %>
-			<form action="/builds/<%= @build.id %>/parts/<%= part.id %>/delete" method="POST">
-	        	<input id="hidden" type="hidden" name="_method" value="delete">
-				<input type="submit" value="Delete">
-	        </form>
-		</li>
-    <% end %>
-    <h3 id="total"> Total: $<%= @build.parts.reduce(0) { |sum, obj| sum + obj.price } %></h3>
-</ul>
-<h4>Want to add a new part? Click <a href="/builds/<%= @build.id %>/parts/new">here</a>.</h4>
-<h4>Want to edit your build? Click <a href="/builds/<%= @build.id %>/edit">here</a>.</h4>
-<h4>Want to see all builds? Click <a href="/builds">here</a>.</h4>
+	<ul>
+		<form action="/builds/<%= @build.id %>/parts/new">
+			<input type="submit" value="Add Part">
+		</form>
+		<br></br>
+	    <% @build.parts.each do |part| %>
+			<li><h4><%= "#{part.name} - $#{part.price}" %></h4>
+				<form action="/builds/<%= @build.id %>/parts/<%= part.id %>/delete" method="POST">
+	        		<input id="hidden" type="hidden" name="_method" value="delete">
+					<input type="submit" value="Delete">
+		        </form>
+			</li>
+	    <% end %>
+	    <br></br>
+	    <h3 id="total"> Total: $<%= @build.parts.reduce(0) { |sum, obj| sum + obj.price } %></h3>
+	    <h3 id="remaining">Remaining: $<%= @build.budget - (@build.parts.reduce(0) { |sum, obj| sum + obj.price }) %></h3>
+	</ul>
+</div>
+<br></br>
+<form action="/builds/<%= @build.id %>/edit">
+	<input type="submit" value="Edit Build">
+</form>
 
 <form action="/builds/<%= @build.id %>/delete" method="POST">
 	<input id="hidden" type="hidden" name="_method" value="delete">
 	<input type="submit" value="Delete Build">
 </form>
 
-<p><a href="/logout">Logout</a></p>

@@ -2,13 +2,14 @@
   <%= flash[:message] %>
 <% end %>
 
-<h1>Create a new Build</h1>
-<form action="/builds" method="POST">
-	<label>Title:</label>
-	<input type="text" name="title"><br>
-	<label>Budget:</label>
-	<input type="text" name="budget"><br>
-	<input type="submit" value="submit">
-</form>
+<div class="col-sm-6 col-md-4">
+	<h1>Create a New Build</h1>
+	<form action="/builds" method="POST">
+		<div class="form-group">
+			<input type="text" class="form-control" name="title" placeholder="Title"><br>
+			<input type="text" class="form-control" name="budget" placeholder="Budget"><br>
+			<input type="submit" value="submit">
+		</div>
+	</form>
+</div>
 
-<p><a href="/logout">Logout</a></p>
