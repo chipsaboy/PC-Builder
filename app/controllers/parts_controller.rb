@@ -2,41 +2,31 @@ class PartsController < ApplicationController
 
   get '/builds/:id/parts/new' do
     if logged_in?
-      @build = Build.find(params[:id])
+      @build = current_user.builds.find_by_id(params[:id])
       erb :'parts/new'
     else
-      flash[:message] = "Please login."
-      erb :'users/login'
+      redirect to '/login'
     end
   end
 
   post '/builds/:id' do
-    if params.values.include?("")
-      @build = Build.find(params[:id])
-      flash[:message] = "Please fill out all fields."
-      erb :'parts/new'
-    else
-      @build = Build.find(params[:id])
-      @part = Part.new(name: params[:name], price: params[:price])
-      @part.save
-      @build.parts << @part
+    @build = current_user.builds.find_by_id(params[:id])
+    @part = @build.parts.build(name: params[:name], price: params[:price])
+    if @part.save
       redirect to "/builds/#{@build.id}"
+    else
+      flash[:message] = @part.errors.full_messages.join(', ')
+      redirect to "/builds/#{@build.id}/parts/new"
     end
   end
 
   delete '/builds/:id/parts/:part_id/delete' do
-    if logged_in?
-      @build = Build.find_by_id(params[:id])
-      if @build.user_id == current_user.id
-        @part = Part.find(params[:part_id])
-        @part.delete
-        redirect to "/builds/#{@build.id}"
-      else
-        redirect to "/builds/#{@build.id}"
-      end
+    @build = current_user.builds.find_by_id(params[:id])
+    @part = Part.find(params[:part_id])
+    if @part && @part.destroy
+      redirect to "/builds/#{@build.id}"
     else
-      flash[:message] = "Please login."
-      erb :'users/login'
+      redirect to "/builds/#{@build.id}/#{@part.id}/edit"
     end
   end
 

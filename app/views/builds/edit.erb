@@ -1,8 +1,15 @@
-<h1>Edit Build</h1><br>
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
 
-<form action="/builds/<%= @build.id %>" method="POST">
-	<input id="hidden" type="hidden" name="_method" value="PATCH">
-	<input type="text" name="title" value="<%= @build.title %>"><br>
-	<input type="text" name="budget" value="<%= @build.budget %>"><br>
-	<input id="submit" type="submit" value="submit">
-</form>
+<div class="col-sm-6 col-md-4">
+	<h1>Edit Build</h1>
+	<form action="/builds/<%= @build.id %>" method="POST">
+		<div class="form-group">
+			<input id="hidden" type="hidden" name="_method" value="patch">
+			<input type="text" name="title" class="form-control" value="<%= @build.title %>"><br>
+			<input type="text" name="budget" class="form-control" value="<%= @build.budget %>"><br>
+			<input id="submit" type="submit" value="submit">
+		</div>
+	</form>
+</div>
